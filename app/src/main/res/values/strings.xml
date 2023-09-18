@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">GitHubApp</string>
+    <string name="profileimage">profileimage</string>
+    <string name="username">username</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="searchbtn">Search</string>
+    <string name="search_users">Search users</string>
+    <string name="enter_text">Enter text</string>
+</resources>
