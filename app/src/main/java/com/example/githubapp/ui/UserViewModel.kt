@@ -19,12 +19,12 @@ class UserViewModel : ViewModel() {
 
     private val apiService = ApiConfig.getApiService()
     private val userListLiveData = MutableLiveData<List<ItemsItem>>()
-    private val _users = MutableLiveData<List<User>>()
+    private val _users = MutableLiveData<List<ItemsItem>>()
     private val _error = MutableLiveData<String>()
-    val users: LiveData<List<User>> = MutableLiveData()
+    val users: LiveData<List<ItemsItem>> = MutableLiveData()
 
     fun searchUsers(query: String) {
-        apiService.getGithubSearch(query).enqueue(object : Callback<GitHubResponse> {
+        apiService.getsearchUser(query).enqueue(object : Callback<GitHubResponse> {
             override fun onResponse(call: Call<GitHubResponse>, response: Response<GitHubResponse>) {
                 if (response.isSuccessful) {
                     userListLiveData.value = response.body()?.items as List<ItemsItem>
@@ -44,8 +44,8 @@ class UserViewModel : ViewModel() {
         return userListLiveData
     }
     fun getFollowers(username: String) {
-        apiService.getFollowers(username).enqueue(object : Callback<List<User>> {
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+        apiService.getfollowers(username).enqueue(object : Callback<List<ItemsItem>> {
+            override fun onResponse(call: Call<List<ItemsItem>>, response: Response<List<ItemsItem>>) {
                 if (response.isSuccessful) { response.body()?.let {
                         _users.postValue(it)
                     }
@@ -54,15 +54,15 @@ class UserViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
+            override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
                 _error.postValue("Network error: ${t.message}")
             }
         })
     }
 
     fun getFollowing(username: String) {
-        apiService.getFollowing(username).enqueue(object : Callback<List<User>> {
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+        apiService.getfollowing(username).enqueue(object : Callback<List<ItemsItem>> {
+            override fun onResponse(call: Call<List<ItemsItem>>, response: Response<List<ItemsItem>>) {
                 if (response.isSuccessful) { response.body()?.let {
                         _users.postValue(it)
                     }
@@ -71,7 +71,7 @@ class UserViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
+            override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
                 _error.postValue("Network error: ${t.message}")
             }
         })

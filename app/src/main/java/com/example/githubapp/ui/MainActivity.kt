@@ -29,22 +29,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         userAdapter = UserAdapter()
         binding.recyclerView.adapter = userAdapter
 
-        binding.searchView.findViewById<EditText>(R.id.searchBar)
-            .setOnEditorActionListener { textView, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    val query = textView.text.toString()
-                    viewModel.searchUsers(query)
-                    showLoading(true)
-                    binding.searchView.visibility = View.GONE
-                    return@setOnEditorActionListener true
-                }
-                false
+
+        binding.searchView.setupWithSearchBar(binding.searchBar)
+        binding.searchView.editText.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val query = textView.text.toString()
+                viewModel.searchUsers(query)
+                showLoading(true)
+                binding.searchView.hide()
+                return@setOnEditorActionListener true
             }
+            false
+        }
 
         viewModel.getUsersLiveData().observe(this, Observer { githubResponse ->
             showLoading(false)

@@ -40,7 +40,7 @@ class FollowersFollowingFragment : Fragment() {
             }
 
             viewModel.users.observe(viewLifecycleOwner, Observer {users ->
-                adapter.submitList(users)
+                adapter.submitList(users as List<User>)
             })
         }
 
